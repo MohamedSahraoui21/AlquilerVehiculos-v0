@@ -18,6 +18,7 @@ public enum Opcion {
 	LISTAR_ALQUILERES("listar alquileres"),
 	LISTAR_ALQUILERES_CLIENTE("listar alquileres de cliente"),
 	LISTAR_ALQUILERES_TURISMO("listar alquileres de turismo");
+	
 
 	private String texto;
 	
