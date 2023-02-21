@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class Cliente {
 	
+	
 	//expresiones regulares//
 	
 	private static final String ER_NOMBRE = "^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+((\\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*)";
