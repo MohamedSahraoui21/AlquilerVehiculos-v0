@@ -10,6 +10,7 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Cliente;
 public class Clientes {
    //crear atributo coleccioneCliente tipo list//
 	private List<Cliente> coleccioneCliente;
+	
 
 	public Clientes() {
 		coleccioneCliente = new ArrayList<>();
