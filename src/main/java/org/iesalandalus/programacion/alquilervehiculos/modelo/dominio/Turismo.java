@@ -96,6 +96,7 @@ public class Turismo {
 		return new Turismo("KIA", "Turismo", 90, matricula);
 	}
 	
+	
     //hash code y equals//
 	@Override
 	public int hashCode() {
