@@ -11,6 +11,7 @@ public class Alquiler {
 	protected static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private static final int PRECIO_DIA = 20;
 	   //atributos//
+	
 
 	private LocalDate fechaAlquiler;
 	private LocalDate fechaDevolucion;
