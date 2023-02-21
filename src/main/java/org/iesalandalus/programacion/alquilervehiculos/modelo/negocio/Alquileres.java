@@ -15,6 +15,7 @@ public class Alquileres {
 	private List<Alquiler> coleccionAlquileres;
 
 	public Alquileres() {
+		
 		coleccionAlquileres = new ArrayList<>();
 	}
 
