@@ -8,6 +8,7 @@ import javax.naming.OperationNotSupportedException;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 
 public class Turismos {
+	
 
 	private List<Turismo> coleccionTurismos;
 
