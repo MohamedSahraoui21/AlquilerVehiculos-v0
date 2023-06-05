@@ -1,60 +1,66 @@
-package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.naming.OperationNotSupportedException;
-
-import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
-
-public class Turismos {
+	package org.iesalandalus.programacion.alquilervehiculos.modelo.negocio;
 	
-
-	private List<Turismo> coleccionTurismos;
-
-	public Turismos() {
-		coleccionTurismos = new ArrayList<>();
-	}
-
-	public List<Turismo> get() {
-		return coleccionTurismos;
-	}
-
-	public int getCantidad() {
-		return coleccionTurismos.size();
-	} 
-	//crear metodo insertar//
+	import java.util.ArrayList;
+	import java.util.List;
+	import javax.naming.OperationNotSupportedException;
+	import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 	
+	public class Turismos {
+		
+		
+		private List <Turismo> coleccionTurismos;
+	    //constructor por defecto que crea el arraylist
 
-	public void insertar(Turismo turismo) throws OperationNotSupportedException {
-		if (turismo == null) {
-			throw new NullPointerException("ERROR: No se puede insertar un turismo nulo.");
+		public Turismos() {
+			coleccionTurismos = new ArrayList<>();
 		}
+		
+		public List<Turismo> get(){
+			return new ArrayList<>(coleccionTurismos);
+		}
+	    //voy a utlizar un metodo de arraylist (.size) para saber la cantidad de una lista
 
-		if (coleccionTurismos.contains(turismo)) {
-			throw new OperationNotSupportedException("ERROR: Ya existe un turismo con esa matrícula.");
+		public int getCantidad() {
+			return coleccionTurismos.size();
 		}
-		coleccionTurismos.add(turismo);
-	}
-      //crear metodo buscar//
-	public Turismo buscar(Turismo turismo) {
-		if (turismo == null) {
-			throw new NullPointerException("ERROR: No se puede buscar un turismo nulo.");
-		}
-		if (coleccionTurismos.contains(turismo)) {
-			return turismo;
-		}
-		return null;
-	}
-     //crear metodo borrar//
-	public void borrar(Turismo turismo) throws OperationNotSupportedException {
-		if (turismo == null) {
-			throw new NullPointerException("ERROR: No se puede borrar un turismo nulo.");
-		}
-		if (!coleccionTurismos.contains(turismo)) {
-			throw new OperationNotSupportedException("ERROR: No existe ningún turismo con esa matrícula.");
-		}
-		coleccionTurismos.remove(turismo);
-	}
+	    //voy a utlizar un metodo de arraylist (.Add) para añadir un valor a la lista
 
-}
+		public void insertar(Turismo turismo) throws OperationNotSupportedException {
+			if (turismo == null) {
+				throw new NullPointerException("ERROR: No se puede insertar un turismo nulo.");
+			}
+			if (coleccionTurismos.contains(turismo)) {
+				throw new OperationNotSupportedException("ERROR: Ya existe un turismo con esa matrícula.");
+			}
+			coleccionTurismos.add(turismo);
+		}
+	
+	     //voy a utlizar un metodo de Arraylist (.get) para buscar un valor en la lista
+
+		public Turismo buscar(Turismo turismo) {
+			Turismo turismoEncontrado;
+			if (turismo == null) {
+				throw new NullPointerException("ERROR: No se puede buscar un turismo nulo.");
+			}
+			int indice = coleccionTurismos.indexOf(turismo);
+			if (coleccionTurismos.contains(turismo)) {
+				turismoEncontrado = coleccionTurismos.get(indice);
+			} else {
+				turismoEncontrado = null;
+			}
+			return turismoEncontrado;
+		}
+		   //voy a utilizar un metodo de arraylist (.remove) para borrar un elemento de la lista
+
+		public void borrar(Turismo turismo) throws OperationNotSupportedException {
+	
+			if (turismo == null) {
+				throw new NullPointerException("ERROR: No se puede borrar un turismo nulo.");
+			}
+			if (!coleccionTurismos.contains(turismo)) {
+				throw new OperationNotSupportedException("ERROR: No existe ningún turismo con esa matrícula.");
+			}
+			coleccionTurismos.remove(turismo);
+		}
+	
+	}

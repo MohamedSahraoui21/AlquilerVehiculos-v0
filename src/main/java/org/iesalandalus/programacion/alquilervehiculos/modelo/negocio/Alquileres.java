@@ -13,108 +13,88 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.dominio.Turismo;
 public class Alquileres {
 
 	private List<Alquiler> coleccionAlquileres;
-
+    //constructor por defecto que crea el arraylist
 	public Alquileres() {
-		
+
 		coleccionAlquileres = new ArrayList<>();
 	}
 
-	
 	public List<Alquiler> get() {
 		return new ArrayList<Alquiler>(coleccionAlquileres);
 	}
-
+         //voy a utlizar un metodo de arraylist (.Add)
 	public List<Alquiler> get(Cliente cliente) {
-		if (cliente == null) {
-			throw new NullPointerException("ERROR: No se puede insertar un alquiler nulo.");
-		}
 
-		List<Alquiler> alquileresCliente = new ArrayList<Alquiler>();
+		List<Alquiler> alquileresCl = new ArrayList<Alquiler>();
 		for (Alquiler alquiler : coleccionAlquileres) {
 			if (alquiler.getCliente().equals(cliente)) {
-				alquileresCliente.add(alquiler);
+				alquileresCl.add(alquiler);
 			}
 		}
-		return alquileresCliente;
+		return alquileresCl;
 	}
 
 	public List<Alquiler> get(Turismo turismo) {
-		if (turismo == null) {
-			throw new NullPointerException("ERROR: No se puede insertar un alquiler nulo.");
-		}
-		List<Alquiler> alquileresTurismo = new ArrayList<Alquiler>();
+
+		List<Alquiler> alquileredTur = new ArrayList<Alquiler>();
 		for (Alquiler alquiler : coleccionAlquileres) {
 			if (alquiler.getTurismo().equals(turismo)) {
-				alquileresTurismo.add(alquiler);
+				alquileredTur.add(alquiler);
 			}
 		}
-		return alquileresTurismo;
+		return alquileredTur;
 	}
-
+     //voy a utlizar un metodo de arraylist (.size) para saber la cantidad de una lista
 	public int getCantidad() {
 		return coleccionAlquileres.size();
 	}
-    //comprobar el alquiler//
+
+	
 	private void comprobarAlquiler(Cliente cliente, Turismo turismo, LocalDate fechaAlquiler)
-			throws IllegalArgumentException, OperationNotSupportedException {
-		for (Alquiler alquiler : get(cliente)) {
-
-			if (alquiler.getFechaDevolucion() == null) {
-
-				throw new OperationNotSupportedException("ERROR: El cliente tiene otro alquiler sin devolver.");
-
+			throws OperationNotSupportedException {
+		for (Alquiler alquiler : get()) {
+			if (alquiler.getTurismo().equals(turismo)) {
+				if (alquiler.getFechaDevolucion() == null) {
+					throw new OperationNotSupportedException("ERROR: El turismo está actualmente alquilado.");
+				}
+				if (alquiler.getFechaDevolucion().isAfter(fechaAlquiler) || alquiler.getFechaDevolucion().isEqual(fechaAlquiler)) {
+					throw new OperationNotSupportedException("ERROR: El turismo tiene un alquiler posterior.");
+				}
 			}
+			// comprobar el alquiler si esta todavia sin devolver o posterior //
 
-			if (alquiler.getFechaDevolucion().isAfter(fechaAlquiler)
-
-					|| alquiler.getFechaDevolucion().isEqual(fechaAlquiler)) {
-
-				throw new OperationNotSupportedException("ERROR: El cliente tiene un alquiler posterior.");
-
+			if (alquiler.getCliente().equals(cliente)) {
+				if (alquiler.getFechaDevolucion() == null) {
+					throw new OperationNotSupportedException("ERROR: El cliente tiene otro alquiler sin devolver.");
+				}
+				if (alquiler.getFechaDevolucion().isAfter(fechaAlquiler)|| alquiler.getFechaDevolucion().isEqual(fechaAlquiler)) {
+					throw new OperationNotSupportedException("ERROR: El cliente tiene un alquiler posterior.");
+				}
 			}
-
+			
 		}
-
-		for (Alquiler alquiler : get(turismo)) {
-
-			if (alquiler.getFechaDevolucion() == null) {
-
-				throw new OperationNotSupportedException("ERROR: El turismo está actualmente alquilado.");
-
-			}
-
-			if ((alquiler.getFechaDevolucion().isAfter(fechaAlquiler)
-
-					|| alquiler.getFechaDevolucion().isEqual(fechaAlquiler))) {
-
-				throw new OperationNotSupportedException("ERROR: El turismo tiene un alquiler posterior.");
-
-			}
-		}
-
 	}
-     //metodo insertar//
+
+	// metodo insertar//
 	public void insertar(Alquiler alquiler) throws OperationNotSupportedException {
 		if (alquiler == null) {
 			throw new NullPointerException("ERROR: No se puede insertar un alquiler nulo.");
 		}
-
 		comprobarAlquiler(alquiler.getCliente(), alquiler.getTurismo(), alquiler.getFechaAlquiler());
 		coleccionAlquileres.add(alquiler);
 	}
-     //metodo buscar//
-	public Alquiler buscar(Alquiler alquiler) {
-		if (alquiler == null) {
-			throw new NullPointerException("ERROR: No se puede buscar un alquiler nulo.");
-		}
-		if (coleccionAlquileres.contains(alquiler)) {
-			return alquiler;
-		}
-		return null;
-	}
-     //metodo borrar//
-	public void borrar(Alquiler alquiler) throws OperationNotSupportedException {
 
+	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+		if (alquiler == null) {
+			throw new NullPointerException("ERROR: No se puede devolver un alquiler nulo.");
+		}
+		if (buscar(alquiler) == null) {
+			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler igual.");
+		}
+		alquiler.devolver(fechaDevolucion);
+	}
+   //voy a utilizar un metodo de arraylist (.remove) para borrar un elemento de la lista
+	public void borrar(Alquiler alquiler) throws OperationNotSupportedException {
 		if (alquiler == null) {
 			throw new NullPointerException("ERROR: No se puede borrar un alquiler nulo.");
 		}
@@ -123,16 +103,19 @@ public class Alquileres {
 		}
 		coleccionAlquileres.remove(alquiler);
 	}
-     //metodo devolver//
-	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
+       // voy a ultilizar un metodo de ArrayList para buscar un valor en la lista utilizar (.get())
+	public Alquiler buscar(Alquiler alquiler) {
+		Alquiler alquilerEncontrado;
 		if (alquiler == null) {
-			throw new NullPointerException("ERROR: No se puede devolver un alquiler nulo.");
+			throw new NullPointerException("ERROR: No se puede buscar un alquiler nulo.");
 		}
-		if (!coleccionAlquileres.contains(alquiler)) {
-			throw new OperationNotSupportedException("ERROR: No existe ningún alquiler igual.");
-
+		int indice = coleccionAlquileres.indexOf(alquiler);
+		if (coleccionAlquileres.contains(alquiler)) {
+			alquilerEncontrado = coleccionAlquileres.get(indice);
+		} else {
+			alquilerEncontrado = null;
 		}
-		alquiler.devolver(fechaDevolucion);
-
+		return alquilerEncontrado;
 	}
+
 }

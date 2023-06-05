@@ -14,26 +14,25 @@ import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.Clientes;
 import org.iesalandalus.programacion.alquilervehiculos.modelo.negocio.Turismos;
 
 public class Modelo {
-	//atributos//
+	// atributos//
 	private Turismos turismos;
 	private Alquileres alquileres;
 	private Clientes clientes;
+
+	public Modelo() {
+		comenzar();
+	}
 
 	public void comenzar() {
 		turismos = new Turismos();
 		alquileres = new Alquileres();
 		clientes = new Clientes();
 
-		
 	}
-
-	public void terminar() {
-		System.out.println("el modelo ha terminado!");
-	}
-
+       
 	public void insertar(Cliente cliente) throws OperationNotSupportedException {
 
-		this.clientes.insertar(new Cliente(cliente));
+		clientes.insertar(new Cliente(cliente));
 
 	}
 
@@ -47,14 +46,17 @@ public class Modelo {
 		if (alquiler == null) {
 			throw new NullPointerException("ERROR: No se puede realizar un alquiler nulo.");
 		}
+
 		Cliente cliente = clientes.buscar(alquiler.getCliente());
 		if (cliente == null) {
 			throw new OperationNotSupportedException("ERROR: No existe el cliente del alquiler.");
 		}
+
 		Turismo turismo = turismos.buscar(alquiler.getTurismo());
 		if (turismo == null) {
 			throw new OperationNotSupportedException("ERROR: No existe el turismo del alquiler.");
 		}
+
 		alquileres.insertar(new Alquiler(cliente, turismo, alquiler.getFechaAlquiler()));
 	}
 
@@ -75,10 +77,11 @@ public class Modelo {
 	}
 
 	public void devolver(Alquiler alquiler, LocalDate fechaDevolucion) throws OperationNotSupportedException {
-		if (alquileres.buscar(alquiler) == null) {
+		Alquiler alquilerDevuelto = alquileres.buscar(alquiler);
+		if (alquilerDevuelto == null) {
 			throw new OperationNotSupportedException("ERROR: No existe el alquiler a devolver.");
 		}
-		alquiler.devolver(fechaDevolucion);
+		alquilerDevuelto.devolver(fechaDevolucion);
 	}
 
 	public void borrar(Cliente cliente) throws OperationNotSupportedException {
@@ -109,12 +112,12 @@ public class Modelo {
 	}
 
 	public List<Turismo> getTurismos() {
-		List<Turismo> TurismoLista = new ArrayList<>();
+		List<Turismo> turismoLista = new ArrayList<>();
 		for (Turismo turismo : turismos.get()) {
-			TurismoLista.add(new Turismo(turismo));
+			turismoLista.add(new Turismo(turismo));
 
 		}
-		return TurismoLista;
+		return turismoLista;
 	}
 
 	public List<Alquiler> getAlquileres() {
@@ -141,4 +144,8 @@ public class Modelo {
 		}
 		return alquilerLista;
 	}
+	//insertar un mensaje simple para terminar
+		public void terminar() {
+			System.out.println("el modelo ha terminado.");
+		}
 }
